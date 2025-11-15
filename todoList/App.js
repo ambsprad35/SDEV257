@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, TextInput } from 'react-native';
 import Task from './components/Tasks'
-import { KeyboardAvoidingView, TextInput } from 'react-native-web';
 
 export default function App() {
   const [task, setTask] = useState();
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
   },
   addWrapper: {
     width: 60,
-    width: 60,
+    height: 60,
     backgroundColor: '#FFF',
     borderRadius: 60,
     justifyContent: 'center',
