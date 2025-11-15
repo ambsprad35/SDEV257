@@ -1,23 +1,66 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Task from './components/Tasks'
+import { KeyboardAvoidingView, TextInput } from 'react-native-web';
 
 export default function App() {
+  const [task, setTask] = useState();
+  const [taskItems, setTaskItems] = useState([]);
+
+  const handleAddTask = () => {
+    Keyboard.dismiss();
+    setTaskItems([...taskItems, task])
+    setTask("");
+  }
+
+  const completeTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy)
+  }
+
   return (
     <View style={styles.container}>
+
+      {/* Todays Tasks */}
       <View style={styles.tasksWrapper}>
         <Text style={styles.sectiontitle}>Today's Tasks</Text>
 
         <View style={styles.items}>
-          <Task text={'Task 1'}></Task>
-          <Task text={'Task 2'}></Task>
-          <Task text={'Task 3'}></Task>
+          {
+            taskItems.map((item, index) => {
+              return (
+                <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+                  <Task text={item} />
+                </TouchableOpacity>
+                
+              )
+            })
+          }
+        
+          {/*  <Task text={'Task 1'}></Task>
+          <Task text={'Task 2'}></Task> */}
 
         </View>
       </View>
 
+          {/* Write a task*/}
+    <KeyboardAvoidingView
+    behavior={Platform === "ios" ? "padding" : "height"} 
+    style={styles.writeTaskWrapper}
+    >
+      <TextInput style={styles.input} placeholder={'Write a task'} value ={task} onChangetext={text => setTask(text)} />
+
+      <TouchableOpacity onPress={() => handleAddTask()}>
+        <View style={styles.addWrapper}>
+          <Text style={styles.addText}>+</Text>
+        </View>
+      </TouchableOpacity>
+    </KeyboardAvoidingView>
+
     </View>
+
   );
 }
 
@@ -38,4 +81,32 @@ const styles = StyleSheet.create({
   items: {
     marginTop: 30,
   },
+  writeTaskWrapper: {
+    postion: 'absolute',
+    bottom: 60,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  input: {
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    backgroundcolor: '#FFF',
+    borderRadius: 60,
+    borderColor: '#C0C0C0',
+    borderWidth: 1,
+    width: 250,
+  },
+  addWrapper: {
+    width: 60,
+    width: 60,
+    backgroundColor: '#FFF',
+    borderRadius: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#C0C0C0',
+    borderWidth: 1,
+  },
+  addText: {},
 });
