@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
 import styles from "./styles";
+import SearchBarWithModal from "./ModalSearchBar";
 
 export default function Films() {
 
@@ -30,6 +31,7 @@ export default function Films() {
   return (
     <View style={styles.container}>
       <Text>Film Content</Text>
+      <SearchBarWithModal />
       <FlatList
         data={films}
         keyExtractor={(item) => item.url}
