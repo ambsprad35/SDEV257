@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
 import styles from "./styles";
+import SearchBarWithModal from "./ModalSearchBar";
 
 export default function Spaceships() {
   
@@ -33,6 +34,7 @@ export default function Spaceships() {
   return (
     <View style={styles.container}>
       <Text>Spaceships Content</Text>
+      <SearchBarWithModal />
       <FlatList 
         data={ships}
         keyExtractor={(item) => item.url}
