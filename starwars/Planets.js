@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
 import styles from "./styles";
+import SearchBarWithModal from "./ModalSearchBar";
 
 
 export default function Planets() {
@@ -34,6 +35,7 @@ export default function Planets() {
     /* Display info from Star Wars API as a list */
     <View style={styles.container}>
       <Text>Planets Content</Text>
+      <SearchBarWithModal />
       <FlatList
         data={planets}
         keyExtractor={(item) => item.url}
