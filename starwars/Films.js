@@ -56,20 +56,11 @@ export default function Films() {
         ))}
       </ScrollView>
 
-      <Modal visible={modalVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalBox}>
-            <Text style={styles.modalTitle}>{selectedFilm?.title}</Text>
-            <Text>Episode: {selectedFilm?.episode_id}</Text>
-            <Text>Director: {selectedFilm?.director}</Text>
-            <Text>Release Date: {selectedFilm?.release_date}</Text>
-
-            <Pressable style={styles.closeButton} onPress={() => setModalVisible(false)}>
-              <Text style={{ color: "white", textAlign: "center" }}>Close</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+      <AnimatedModal
+        visible={modalVisible}
+        text={selectedFilm?.title}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }
