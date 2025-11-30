@@ -1,7 +1,17 @@
 import React, {useEffect, useState} from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
+import { 
+  View, 
+  Text,  
+  ActivityIndicator,
+  ScrollView,
+  Modal,
+  Pressable,
+  StyleSheet 
+} from "react-native";
 import styles from "./styles";
 import SearchBarWithModal from "./ModalSearchBar";
+import SwipeableListItem from "./SwipeableListItem";
+
 
 
 export default function Planets() {
@@ -9,6 +19,8 @@ export default function Planets() {
   const [planets, setPlanets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedPlanet, setSelectedPlanet] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   /* Fetch Star Wars Api */
   const fetchPlanets = async () => {
@@ -27,6 +39,12 @@ export default function Planets() {
     fetchPlanets();
   }, []);
 
+
+  function handleSwipe(item) {
+    setSelectedPlanet(item);
+    setModalVisible(true);
+  }
+
   /* Display either loading indicator or error message */
   if(loading) return <ActivityIndicator size="large" style={{ marginTop: 50}} />;
   if(error) return <Text style={styles.error}>{error}</Text>;
@@ -34,19 +52,27 @@ export default function Planets() {
   return (
     /* Display info from Star Wars API as a list */
     <View style={styles.container}>
-      <Text>Planets Content</Text>
+      <Text>Planets</Text>
       <SearchBarWithModal />
-      <FlatList
-        data={planets}
-        keyExtractor={(item) => item.url}
-        renderItem={({item}) => (
-          <View style={styles.item}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text>Climate: {item.climate}</Text>
-            <Text>Population: {item.population}</Text>
+      <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 20 }}>
+        {planets.map((planet) => (
+           <SwipeableListItem key={planet.url} item={planet} onSwipe={handleSwipe} />
+        ))}
+      </ScrollView>
+
+    <Modal visible={modalVisible} transparent animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalBox}>
+            <Text style={styles.modalTitle}>{selectedPlanet?.name}</Text>
+            <Text>Climate: {selectedPlanet?.climate}</Text>
+            <Text>Population: {selectedPlanet?.population}</Text>
+
+            <Pressable style={styles.closeButton} onPress={() => setModalVisible(false)}>
+              <Text style={{ color: "white", textAlign: "center" }}>Close</Text>
+            </Pressable>
           </View>
-        )}
-      />
+        </View>
+      </Modal>
     </View>
   );
 }
