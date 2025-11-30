@@ -66,25 +66,13 @@ export default function Spaceships() {
         ))}
       </ScrollView>
 
-      /* Open the Modal Dialogue on a swipe */
-      <Modal visible={modalVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalBox}>
-            <Text style={styles.modalText}>
-              {selectedShip?.name}
-            </Text>
-            <Text>Model: {selectedShip?.model}</Text>
-            <Text>Crew: {selectedShip?.crew}</Text>
+      {/* Open the Modal Dialogue on a swipe */}
+      <AnimatedModal
+        visible={modalVisible}
+        text={selectedShip?.name}
+        onClose={() => setModalVisible(false)}
+      />
 
-            <Pressable
-              onPress={() => setModalVisible(false)}
-              style={styles.closeButton}
-            >
-              <Text style={{ color: "white" }}>Close</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }
