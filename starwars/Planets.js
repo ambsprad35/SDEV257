@@ -60,19 +60,13 @@ export default function Planets() {
         ))}
       </ScrollView>
 
-    <Modal visible={modalVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalBox}>
-            <Text style={styles.modalTitle}>{selectedPlanet?.name}</Text>
-            <Text>Climate: {selectedPlanet?.climate}</Text>
-            <Text>Population: {selectedPlanet?.population}</Text>
+      <AnimatedModal
+        visible={modalVisible}
+        text={selectedPlanet?.name}
+        onClose={() => setModalVisible(false)}
+      />
 
-            <Pressable style={styles.closeButton} onPress={() => setModalVisible(false)}>
-              <Text style={{ color: "white", textAlign: "center" }}>Close</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+
     </View>
   );
 }
