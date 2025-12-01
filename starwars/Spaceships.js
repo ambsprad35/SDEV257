@@ -12,6 +12,7 @@ import {
 import styles from "./styles";
 import SearchBarWithModal from "./ModalSearchBar";
 import SwipeableListItem from "./SwipeableListItem";
+import LazyImage from "./LazyImage";
 
 export default function Spaceships() {
   
@@ -50,6 +51,9 @@ export default function Spaceships() {
 
   return (
     <View style={styles.container}>
+      <LazyImage 
+        source={require("./assets/Star_Wars_Logo.png")} 
+      />
       <Text>Spaceships Content</Text>
       <SearchBarWithModal />
       <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 20 }}>
