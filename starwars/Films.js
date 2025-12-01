@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import styles from "./styles";
 import SearchBarWithModal from "./ModalSearchBar";
-import SwipeableListItem from "./SwipeableListItem"
+import SwipeableListItem from "./SwipeableListItem";
+import LazyImage from "./LazyImage";
 
 export default function Films() {
 
@@ -46,6 +47,9 @@ export default function Films() {
 
   return (
     <View style={styles.container}>
+      <LazyImage 
+        source={require("./assets/Star_Wars_Logo.png")} 
+      />
       <Text>Film Content</Text>
       <SearchBarWithModal />
       
