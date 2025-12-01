@@ -11,6 +11,7 @@ import {
 import styles from "./styles";
 import SearchBarWithModal from "./ModalSearchBar";
 import SwipeableListItem from "./SwipeableListItem";
+import LazyImage from "./LazyImage";
 
 
 
@@ -52,6 +53,9 @@ export default function Planets() {
   return (
     /* Display info from Star Wars API as a list */
     <View style={styles.container}>
+      <LazyImage 
+        source={require("./assets/Star_Wars_Logo.png")} 
+      />
       <Text>Planets</Text>
       <SearchBarWithModal />
       <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 20 }}>
