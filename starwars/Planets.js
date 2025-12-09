@@ -4,6 +4,7 @@ import {
   Text,  
   ActivityIndicator,
   ScrollView,
+  Image,
   Modal,
   Pressable,
   StyleSheet 
@@ -11,11 +12,12 @@ import {
 import styles from "./styles";
 import SearchBarWithModal from "./ModalSearchBar";
 import SwipeableListItem from "./SwipeableListItem";
+import AnimatedModal from "./AnimatedModal";
 import LazyImage from "./LazyImage";
 
 
 
-export default function Planets() {
+export default function Planets({ isConnected }) {
   /* Create Arrays */
   const [planets, setPlanets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,12 +37,19 @@ export default function Planets() {
       setLoading(false);
     }
   };
-
+  
+  // Fetch on initial load
   useEffect(() => {
     fetchPlanets();
   }, []);
 
-
+  // Re-fetch when network goes offline then restores
+    useEffect(() => {
+    if (isConnected) {
+      fetchPlanets();
+    }
+  }, [isConnected]);
+  
   function handleSwipe(item) {
     setSelectedPlanet(item);
     setModalVisible(true);
@@ -65,12 +74,10 @@ export default function Planets() {
       </ScrollView>
 
       <AnimatedModal
-        visible={modalVisible}
-        text={selectedPlanet?.name}
-        onClose={() => setModalVisible(false)}
-      />
-
-
+      visible={modalVisible}
+      text={selectedPlanet?.name}
+      onClose={() => setModalVisible(false)}
+    />
     </View>
   );
 }
