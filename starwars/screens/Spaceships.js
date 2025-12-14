@@ -5,14 +5,16 @@ import {
   FlatList, 
   ActivityIndicator, 
   ScrollView,
+  Image,
   Modal,
   Pressable,
   StyleSheet 
 } from "react-native";
-import styles from "./styles";
-import SearchBarWithModal from "./ModalSearchBar";
-import SwipeableListItem from "./SwipeableListItem";
-import LazyImage from "./LazyImage";
+import styles from "../styles";
+import SearchBarWithModal from "../navigation/ModalSearchBar";
+import SwipeableListItem from "../navigation/SwipeableListItem";
+import AnimatedModal from "../navigation/AnimatedModal";
+import LazyImage from "../LazyImage";
 
 export default function Spaceships() {
   
@@ -52,8 +54,9 @@ export default function Spaceships() {
   return (
     <View style={styles.container}>
       <LazyImage 
-        source={require("./assets/Star_Wars_Logo.png")} 
+        source={require("../assets/Star_Wars_Logo.png")} 
       />
+
       <Text>Spaceships Content</Text>
       <SearchBarWithModal />
       <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 20 }}>
@@ -70,13 +73,12 @@ export default function Spaceships() {
         ))}
       </ScrollView>
 
-      {/* Open the Modal Dialogue on a swipe */}
-      <AnimatedModal
-        visible={modalVisible}
-        text={selectedShip?.name}
-        onClose={() => setModalVisible(false)}
-      />
-
+    {/* Open the Modal Dialogue on a swipe */}
+    <AnimatedModal
+      visible={modalVisible}
+      text={selectedShip?.name}
+      onClose={() => setModalVisible(false)}
+    />
     </View>
   );
 }
