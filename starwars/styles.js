@@ -48,5 +48,62 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
   },
+    backdrop: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+    center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "red",
+    marginBottom: 10,
+  },
+  message: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+    card: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+  },
+  subText: {
+    color: "#666",
+  },
+  swipeAction: {
+    backgroundColor: "#1e90ff",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 80,
+  },
+  swipeText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  section: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 16,
+    elevation: 2,
+  },
+  row: {
+    marginBottom: 12,
+  },
+  label: {
+    fontWeight: "600",
+    color: "#555",
+  },
+  value: {
+    fontSize: 16,
+  },
   
 });
