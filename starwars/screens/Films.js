@@ -4,14 +4,16 @@ import {
   Text,  
   ActivityIndicator,
   ScrollView, 
+  Image,
   Modal,
   Pressable,
   StyleSheet 
 } from "react-native";
-import styles from "./styles";
-import SearchBarWithModal from "./ModalSearchBar";
-import SwipeableListItem from "./SwipeableListItem";
-import LazyImage from "./LazyImage";
+import styles from "../styles";
+import SearchBarWithModal from "../navigation/ModalSearchBar";
+import SwipeableListItem from "../navigation/SwipeableListItem";
+import AnimatedModal from "../navigation/AnimatedModal";
+import LazyImage from "../LazyImage";
 
 export default function Films() {
 
@@ -48,23 +50,22 @@ export default function Films() {
   return (
     <View style={styles.container}>
       <LazyImage 
-        source={require("./assets/Star_Wars_Logo.png")} 
+        source={require("../assets/Star_Wars_Logo.png")} 
       />
       <Text>Film Content</Text>
       <SearchBarWithModal />
-      
-
+    
       <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
         {films.map(film => (
           <SwipeableListItem key={film.url} item={film} onSwipe={handleSwipe} />
         ))}
       </ScrollView>
 
-      <AnimatedModal
-        visible={modalVisible}
-        text={selectedFilm?.title}
-        onClose={() => setModalVisible(false)}
-      />
+    <AnimatedModal
+      visible={modalVisible}
+      text={selectedFilm?.title}
+      onClose={() => setModalVisible(false)}
+    />
     </View>
   );
 }
