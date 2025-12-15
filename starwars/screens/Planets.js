@@ -14,6 +14,7 @@ import LazyImage from '../LazyImage';
 export default function Planets({ navigation, isConnected }) {
   const [planets, setPlanets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filteredPlanets, setFilteredPlanets] = useState([]);
   const [error, setError] = useState(null);
 
   const fetchPlanets = async () => {
@@ -21,6 +22,7 @@ export default function Planets({ navigation, isConnected }) {
       const response = await fetch('https://swapi.py4e.com/api/planets/');
       const json = await response.json();
       setPlanets(json.results);
+      setFilteredPlanets(json.results)  // initialize filtered list
     } catch (err) {
       setError('Failed to load planets');
     } finally {
@@ -38,8 +40,21 @@ export default function Planets({ navigation, isConnected }) {
     }
   }, [isConnected]);
 
-  const handleSwipe = (planet) => {
-    navigation.navigate('PlanetDetails', { planet });
+    useEffect(() => {
+    setFilteredPlanets(planets);
+  }, [planets]);
+
+  const handleSearch = (text) => {
+    if (!text || text.trim() === '') {
+      setFilteredPlanets(planets);
+      return;
+    }
+
+    const filtered = planets.filter(planet =>
+      planet.name.toLowerCase().includes(text.toLowerCase())
+    );
+
+    setFilteredPlanets(filtered);
   };
 
   if (loading) {
@@ -54,10 +69,11 @@ export default function Planets({ navigation, isConnected }) {
     <View style={styles.container}>
       <LazyImage source={require('../assets/Star_Wars_Logo.png')} />
       <Text style={styles.header}>Planets</Text>
-      <SearchBarWithModal />
+      
+      <SearchBarWithModal onSearch={handleSearch} />
 
       <FlatList
-        data={planets}
+        data={filteredPlanets}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
           <SwipeableListItem
