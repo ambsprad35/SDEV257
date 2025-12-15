@@ -18,6 +18,7 @@ import LazyImage from "../LazyImage";
 export default function Films() {
 
   const [films, setFilms] = useState([]);
+  const [filteredFilms, setFilteredFilms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedFilm, setSelectedFilm] = useState(null);
@@ -28,6 +29,7 @@ export default function Films() {
       const response = await fetch("https://swapi.dev/api/films/");
       const json = await response.json();
       setFilms(json.results);
+      setFilteredFilms(json.results); // initialize filtered list
     } catch (err) {
       setError("Failed to load films");
     } finally {
@@ -39,33 +41,44 @@ export default function Films() {
     fetchFilms();
   }, []);
 
-  function handleSwipe(item) {
-    setSelectedFilm(item);
+  const handleSearch = (text) => {
+    if (!text || text.trim() === "") {
+      setFilteredFilms(films);
+      return;
+    }
+    const filtered = films.filter(film =>
+      film.title.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredFilms(filtered);
+  };
+
+  const handleSwipe = (film) => {
+    setSelectedFilm(film);
     setModalVisible(true);
-  }
+  };
 
   if (loading) return <ActivityIndicator size="large" style={{ marginTop: 50 }} />;
   if (error) return <Text style={styles.error}>{error}</Text>;
 
   return (
     <View style={styles.container}>
-      <LazyImage 
-        source={require("../assets/Star_Wars_Logo.png")} 
-      />
-      <Text>Film Content</Text>
-      <SearchBarWithModal />
-    
+      <LazyImage source={require("../assets/Star_Wars_Logo.png")} />
+      <Text style={styles.header}>Films</Text>
+
+      <SearchBarWithModal onSearch={handleSearch} placeholder="Search films..." />
+
       <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-        {films.map(film => (
+        {filteredFilms.map(film => (
           <SwipeableListItem key={film.url} item={film} onSwipe={handleSwipe} />
         ))}
       </ScrollView>
 
-    <AnimatedModal
-      visible={modalVisible}
-      text={selectedFilm?.title}
-      onClose={() => setModalVisible(false)}
-    />
+      <AnimatedModal
+        visible={modalVisible}
+        text={selectedFilm?.title}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
+
   );
 }
