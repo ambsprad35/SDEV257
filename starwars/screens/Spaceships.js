@@ -20,6 +20,7 @@ export default function Spaceships() {
   
   /* Create Spaceships arrays */
   const [ships, setShips] = useState([]);
+  const [filteredShips, setFilteredShips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedShip, setSelectedShip] = useState(null);
@@ -31,6 +32,7 @@ export default function Spaceships() {
       const response = await fetch("https://swapi.dev/api/starships/");
       const json = await response.json();
       setShips(json.results);
+      setFilteredShips(json.results); // initialize filtered list
     } catch (err) {
       setError("Failed to load spaceships.");
     } finally {
@@ -38,47 +40,53 @@ export default function Spaceships() {
     }
   };
 
+  const handleSearch = (text) => {
+    if (!text || text.trim() === "") {
+      setFilteredShips(ships);
+      return;
+    }
+    const filtered = ships.filter(ship =>
+      ship.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredShips(filtered);
+  };
+
   useEffect(() => {
     fetchShips();
   }, []);
 
-  function handleSwipe(item) {
-    setSelectedShip(item);
+  const handleSwipe = (ship) => {
+    setSelectedShip(ship);
     setModalVisible(true);
-  }
+  };
 
   /* Display laoding indicator or error message when needed */
   if (loading) return <ActivityIndicator size="large" style={{ marginTop: 50}} />;
   if(error) return <Text style={styles.error}>{error}</Text>;
 
   return (
-    <View style={styles.container}>
-      <LazyImage 
-        source={require("../assets/Star_Wars_Logo.png")} 
-      />
 
-      <Text>Spaceships Content</Text>
-      <SearchBarWithModal />
-      <ScrollView style={styles.scroll} contentContainerStyle={{ paddingBottom: 20 }}>
-        {ships.map((ships) => (
-          <SwipeableListItem
-            key={ships.url}
-            item={ships}
-            onSwipe={handleSwipe}
-          >
-            <Text style={styles.name}>{ships.name}</Text>
-            <Text>Model: {ships.model}</Text>
-            <Text>Crew: {ships.crew}</Text>
+    <View style={styles.container}>
+      <LazyImage source={require("../assets/Star_Wars_Logo.png")} />
+      <Text style={styles.header}>Spaceships</Text>
+
+      <SearchBarWithModal onSearch={handleSearch} placeholder="Search spaceships..." />
+
+      <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+        {filteredShips.map(ship => (
+          <SwipeableListItem key={ship.url} item={ship} onSwipe={handleSwipe}>
+            <Text style={styles.name}>{ship.name}</Text>
+            <Text>Model: {ship.model}</Text>
+            <Text>Crew: {ship.crew}</Text>
           </SwipeableListItem>
         ))}
       </ScrollView>
 
-    {/* Open the Modal Dialogue on a swipe */}
-    <AnimatedModal
-      visible={modalVisible}
-      text={selectedShip?.name}
-      onClose={() => setModalVisible(false)}
-    />
+      <AnimatedModal
+        visible={modalVisible}
+        text={selectedShip?.name}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }
